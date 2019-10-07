@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.dao.KuserDao">
+  <resultMap id="BaseResultMap" type="com.wx.po.Kuser">
+    <id column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="userno" jdbcType="VARCHAR" property="userno" />
+    <result column="userflower" jdbcType="VARCHAR" property="userflower" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userid, openid, userno, userflower, img, username
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from kuser
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
+  <select id="selectFriend" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT DISTINCT ku.*
+        FROM
+        kuser k,
+        kuser ku,
+        friend f
+        WHERE
+        (k.userid=#{userid}
+        AND
+        k.userid=f.userid
+        AND
+        ku.userid=f.friendid)
+        OR
+        ku.userid=#{userid}
+
+        ORDER BY ku.userflower desc
+  </select>
+  <select id="selectByOpenid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from
+    kuser
+    where openid=#{openid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from kuser
+    where userid = #{userid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wx.po.Kuser">
+    insert into kuser (userid, openid, userno, 
+      userflower, img, username
+      )
+    values (#{userid,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{userno,jdbcType=VARCHAR}, 
+      #{userflower,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wx.po.Kuser">
+    insert into kuser
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="openid != null">
+        openid,
+      </if>
+      <if test="userno != null">
+        userno,
+      </if>
+      <if test="userflower != null">
+        userflower,
+      </if>
+      <if test="img != null">
+        img,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="userno != null">
+        #{userno,jdbcType=VARCHAR},
+      </if>
+      <if test="userflower != null">
+        #{userflower,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null">
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wx.po.Kuser">
+    update kuser
+    <set>
+      <if test="openid != null">
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="userno != null">
+        userno = #{userno,jdbcType=VARCHAR},
+      </if>
+      <if test="userflower != null">
+        userflower = #{userflower,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null">
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wx.po.Kuser">
+    update kuser
+    set openid = #{openid,jdbcType=VARCHAR},
+      userno = #{userno,jdbcType=VARCHAR},
+      userflower = #{userflower,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR}
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.dao.MusicDao">
+  <resultMap id="BaseResultMap" type="com.wx.po.Music">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="musicurl" jdbcType="VARCHAR" property="musicurl" />
+    <result column="musicgrade" jdbcType="VARCHAR" property="musicgrade" />
+    <result column="musicimg" jdbcType="VARCHAR" property="musicimg" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userid, musicurl, musicgrade, musicimg
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from music
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+     from music
+     where userid=#{userid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from music
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wx.po.Music">
+    insert into music (id, userid, musicurl, 
+      musicgrade, musicimg)
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{musicurl,jdbcType=VARCHAR}, 
+      #{musicgrade,jdbcType=VARCHAR}, #{musicimg,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wx.po.Music">
+    insert into music
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="musicurl != null">
+        musicurl,
+      </if>
+      <if test="musicgrade != null">
+        musicgrade,
+      </if>
+      <if test="musicimg != null">
+        musicimg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="musicurl != null">
+        #{musicurl,jdbcType=VARCHAR},
+      </if>
+      <if test="musicgrade != null">
+        #{musicgrade,jdbcType=VARCHAR},
+      </if>
+      <if test="musicimg != null">
+        #{musicimg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wx.po.Music">
+    update music
+    <set>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="musicurl != null">
+        musicurl = #{musicurl,jdbcType=VARCHAR},
+      </if>
+      <if test="musicgrade != null">
+        musicgrade = #{musicgrade,jdbcType=VARCHAR},
+      </if>
+      <if test="musicimg != null">
+        musicimg = #{musicimg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wx.po.Music">
+    update music
+    set userid = #{userid,jdbcType=INTEGER},
+      musicurl = #{musicurl,jdbcType=VARCHAR},
+      musicgrade = #{musicgrade,jdbcType=VARCHAR},
+      musicimg = #{musicimg,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
